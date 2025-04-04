@@ -66,8 +66,14 @@ static void aRead() {
 }
 
 static void pwmWrite() {
+  int16_t val;
   int16_t *value = (int16_t *)&BuffIn[2];
-  analogWrite(BuffIn[1], *value);
+#if defined ARDUINO_ARCH_RENESAS_UNO  
+  val = *value;
+#else
+  val = *value/16;
+#endif
+analogWrite(BuffIn[1], val);
 }
 
 static void encRead() {
